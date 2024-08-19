@@ -1,0 +1,52 @@
+name: deployment
+# deployment전체를 작성할것
+
+on:
+  push:
+    branches: -main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_USER: ${{ secrets.MYSQL_USER }}
+          MYSQL_PASSWORD: ${{ secrets.MYSQL_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.MYSQL_DATABASE }}
+        options: >-
+          --health-cmd="mysqladimn ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: set env
+        working-directory: ./mock-test
+        run: |
+          echo PORT=${{ secrets.PORT }} > .env:
+          echo MESSAGE=${{ secrets.MESSAGE }} >> .env:
+          echo >> .env
+          echo MYSQL__HOST=${{ secrets.MYSQL__HOST }} >> .env:
+          echo MYSQL__USER=${{ secrets.MYSQL__USER }} >> .env:
+          echo MYSQL__PASSWORD=${{ secrets.MYSQL__PASSWORD }} >> .env:
+          echo MYSQL__DATABASE=${{ secrets.MYSQL__DATABASE }} >> .env:
+
+      - name: Install dependencies of backend
+        working-directory: ./mock-test
+        run: npm i
+
+      - name: Run Test of backend
+        working-directory: ./mock-test
+        run: npm test

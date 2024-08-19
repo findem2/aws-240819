@@ -4,8 +4,9 @@
   "description": "",
   "main": "./build/index.js",
   "scripts": {
-    "test": "jest --watch",
-    "start": "nodemon ./src/index.ts"
+    "test": "jest",
+    "start": "nodemon ./src/index.ts",
+    "build": "rm -rf ./build & tsc --project tsconfig.build.json"
   },
   "keywords": [],
   "author": "",

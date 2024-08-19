@@ -59,7 +59,7 @@ describe("Test Todo List", () => {
     const data = { id: 1, title: "test todo list", isCompleted: false };
     mock
       .onGet("/todo")
-      .reply(200, [data, { id: 1, title: "first Todo", isCompleted: false }]);
+      .reply(200, [data, { id: 2, title: "first Todo", isCompleted: false }]);
 
     await waitFor(() => {
       expect(screen.getByText("Todo List")).toBeInTheDocument();

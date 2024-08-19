@@ -12,7 +12,7 @@ app.use(express.json());
 app.use("/api/todo", todo);
 
 app.get("/api", (req: Request, res: Response) => {
-  res.status(200).send(process.env.MESSAGE || "Now Testing");
+  res.status(200).send(process.env.MESSAGE || "AWS's Members");
 });
 
 export default app;
